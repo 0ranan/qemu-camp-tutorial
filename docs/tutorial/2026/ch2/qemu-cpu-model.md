@@ -202,4 +202,8 @@ struct RISCVCPUConfig {
 
 这个过程也完美体现了 QOM“一次定义，多处使用”的设计哲学。CPU 模型的开发者只需要关注“定义类型”，而平台集成者或最终用户则通过简单的命令行参数“启用类型”。只要类型名正确注册，QEMU 的对象系统就会自动将其集成到任何支持该架构的机器模型中，包括 `virt`、`spike` 或 `sifive_u` 等。
 
+!!! question "随堂测验"
+
+    [>> 【点击进入随堂测验】2-3 分钟小测，快速巩固 ☄](https://ima.qq.com/quiz?quizId=35ZeDYUSP4cQgbQwRfwff0ppExoKKq8civQPTydfR1rF)
+
 [1]: https://github.com/plctlab/writing-your-first-riscv-simulator/blob/main/S01E07-CPU-Simulation-Part1-in-Qemu.pdf

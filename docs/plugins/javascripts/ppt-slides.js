@@ -547,7 +547,28 @@
         });
     }
 
+    function updateUrl(enabled, index) {
+        var url = new URL(location.href);
+        if (enabled) {
+            url.searchParams.set("ppt", index != null ? String(index + 1) : "1");
+        } else {
+            url.searchParams.delete("ppt");
+        }
+        history.replaceState(null, "", url.toString());
+    }
+
+    function loadUrlPptParam() {
+        var url = new URL(location.href);
+        var val = url.searchParams.get("ppt");
+        if (val === null) {
+            return null;
+        }
+        var slide = parseInt(val, 10);
+        return { index: (isNaN(slide) || slide < 1) ? 0 : slide - 1 };
+    }
+
     function savePptState(enabled, index) {
+        updateUrl(enabled, index);
         try {
             if (enabled) {
                 sessionStorage.setItem(SESSION_KEY, JSON.stringify({
@@ -561,6 +582,10 @@
     }
 
     function loadPptState() {
+        var fromUrl = loadUrlPptParam();
+        if (fromUrl) {
+            return fromUrl;
+        }
         try {
             var raw = sessionStorage.getItem(SESSION_KEY);
             if (!raw) {
@@ -643,7 +668,19 @@
 
     function init(root) {
         var article = findArticle(root);
-        if (!article || article.dataset.pptInit === "true") {
+        if (!article) {
+            return;
+        }
+
+        // Hot-reload: same page, already initialised — just rebuild slides in place
+        var prev = window.__pptState;
+        if (article.dataset.pptInit === "true" && prev && prev.article === article) {
+            if (prev.enabled) {
+                var idx = prev.activeIndex;
+                rebuildSlides(prev);
+                setActiveSlide(prev, Math.min(idx, prev.deckInfo.slides.length - 1));
+                scheduleFrame(function () { resizeCanvas(prev); });
+            }
             return;
         }
         article.dataset.pptInit = "true";
@@ -664,6 +701,11 @@
             return;
         }
         article.appendChild(deckInfo.deck);
+
+        // Carry over PPT-mode state from a previous init on a different article
+        // (e.g. MkDocs instant-loading swapped the page but URL still has ?ppt)
+        var wasPptEnabled = prev && prev.enabled;
+        var prevIndex = prev ? prev.activeIndex : 0;
 
         var state = {
             deckInfo: deckInfo,
@@ -695,6 +737,9 @@
         var saved = loadPptState();
         if (saved) {
             state.activeIndex = saved.index || 0;
+            setMode(state, true);
+        } else if (wasPptEnabled) {
+            state.activeIndex = prevIndex;
             setMode(state, true);
         } else {
             setMode(state, false);

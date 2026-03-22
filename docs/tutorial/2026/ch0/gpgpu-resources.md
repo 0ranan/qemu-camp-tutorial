@@ -31,11 +31,11 @@
 !!! note "中文资源"
 
     - [HPC Wiki: CUDA 编程入门][hpcwiki-cuda] — 系统的中文入门教程
-    - [知乎: CUDA 编程入门极简教程][zhihu-cuda] — 快速上手
-    - [中国科大超算中心: GPU 异构计算和 CUDA 程序简介][ustc-gpu] — 高校超算文档
-    - [NVIDIA 官方中文博客: CUDA 编程手册系列][nvidia-cn-blog] — 官方中文版
+    - [知乎：CUDA 编程入门极简教程][zhihu-cuda] — 快速上手
+    - [中国科大超算中心：GPU 异构计算和 CUDA 程序简介][ustc-gpu] — 高校超算文档
+    - [NVIDIA 官方中文博客：CUDA 编程手册系列][nvidia-cn-blog] — 官方中文版
     - [NVIDIA CUDA 编程指南 v1.1 中文全译本（PDF）][nvidia-cuda-guide-cn] — 官方编程指南完整翻译
-    - [鲁老师: 初识 GPU 编程][lulaoshi-gpu] — Python + CUDA 入门
+    - [鲁老师：初识 GPU 编程][lulaoshi-gpu] — Python + CUDA 入门
     - [Ji Zhuoran: GPU 编程手册][jizhuoran-gpu] — 系统学习 GPU 编程
 
 ### 英文教程
@@ -63,7 +63,7 @@
 !!! tip "通用计算 API"
 
     - [Vulkan Tutorial: Compute Shader][vulkan-tutorial-compute] — 从零构建 GPU 粒子系统模拟
-    - [Vulkan 官方文档: Compute Shader][vulkan-docs-compute] — 官方教程
+    - [Vulkan 官方文档：Compute Shader][vulkan-docs-compute] — 官方教程
     - [Khronos: Getting Started with Vulkan Compute Acceleration][khronos-vulkan] — Vulkan 计算入门指南
     - [Vulkan Compute Example][vulkan-compute-example] — 简单的 Vulkan GPGPU 示例
     - [ArchWiki: GPGPU 概览][archwiki-gpgpu] — 各 GPGPU API（CUDA/OpenCL/Vulkan/HIP/SYCL）对比

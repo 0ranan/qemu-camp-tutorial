@@ -64,8 +64,15 @@ git push origin main
 本地运行全部测题的方式：
 
 ```bash
+# 使用 Makefile.camp（推荐，自动计算得分）
+make -f Makefile.camp test-gpgpu
+
+# 使用 qos-test 直接运行全部 GPGPU 测题
 cd build
 QTEST_QEMU_BINARY=./qemu-system-riscv64 ./tests/qtest/qos-test -p /riscv64/gpgpu
+
+# 运行单个子测试（通过 QOS 路径过滤）
+./build/tests/qtest/qos-test -p /riscv64/gpgpu-tests/device-id
 ```
 
 GPGPU 方向全部测题通过的情况下，你会看到如下输出：

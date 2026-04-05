@@ -69,10 +69,10 @@ make -f Makefile.camp test-gpgpu
 
 # 使用 qos-test 直接运行全部 GPGPU 测题
 cd build
-QTEST_QEMU_BINARY=./qemu-system-riscv64 ./tests/qtest/qos-test -p /riscv64/gpgpu
+QTEST_QEMU_BINARY=./qemu-system-riscv64 ./tests/qtest/qos-test -p /riscv64/virt/generic-pcihost/pci-bus-generic/pci-bus/gpgpu
 
 # 运行单个子测试（通过 QOS 路径过滤）
-./build/tests/qtest/qos-test -p /riscv64/gpgpu-tests/device-id
+QTEST_QEMU_BINARY=./qemu-system-riscv64 ./build/tests/qtest/qos-test -p /riscv64/virt/generic-pcihost/pci-bus-generic/pci-bus/gpgpu/gpgpu-tests/device-id
 ```
 
 GPGPU 方向全部测题通过的情况下，你会看到如下输出：
@@ -101,7 +101,7 @@ ok 17 /riscv64/.../gpgpu/gpgpu-tests/lp-convert-saturate
 
 ```bash
 cd build
-QTEST_QEMU_BINARY=./qemu-system-riscv64 ./tests/qtest/qos-test -p /riscv64/gpgpu/kernel-exec
+QTEST_QEMU_BINARY=./qemu-system-riscv64 ./tests/qtest/qos-test -p /riscv64/virt/generic-pcihost/pci-bus-generic/pci-bus/gpgpu/gpgpu-tests/kernel-exec
 ```
 
 如果你想调试某个测例的设备模型，可以结合 GDB 在 QEMU 源码中设断点。由于 QTest 框架在宿主机侧运行，你可以直接在另一个终端用 GDB 附加到运行中的 QEMU 进程。

@@ -153,7 +153,7 @@ where src = mem at gpr[rs1], dst = mem at gpr[rd]
 
 ```text
 A = mem at gpr[rs1]                           // INT32 array
-N = gpr[rs2]                                  // total elements
+N = gpr[rs2]                                  // total elements (upper bound)
 K = gpr[rd]                                   // elements to sort
 for i in 0..K-2:
     for j in 0..K-i-2:
@@ -162,7 +162,7 @@ for i in 0..K-2:
 ```
 
 !!! note
-    排序结果 **原地写回** 原数组。`gpr[rd] > gpr[rs2]` 时行为为 **未定义**。
+    排序结果 **原地写回** 原数组。仅数组前 K 个元素参与排序，其余元素保持不变。`gpr[rs2]` 表示数组总长度，仅作为边界约束；排序算法本身仅使用 K。`gpr[rd] > gpr[rs2]` 时行为为 **未定义**。
 
 ---
 

@@ -78,7 +78,7 @@ make -f Makefile.camp build
 
 | 偏移 | 名称 | 说明 |
 |------|------|-----|
-| 0x00 | I2C_CTRL | bit0: EN, bit1: START, bit2: STOP, bit3: RW (0=写, 1=读) |
+| 0x00 | I2C_CTRL | bit0: EN, bit1: START, bit2: STOP, bit3: RW (0=写，1=读) |
 | 0x04 | I2C_STATUS | bit0: BUSY, bit1: ACK, bit2: DONE |
 | 0x08 | I2C_ADDR | 7 位从设备地址 |
 | 0x0C | I2C_DATA | 数据寄存器 |

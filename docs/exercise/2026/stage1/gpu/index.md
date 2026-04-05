@@ -1,5 +1,18 @@
+专业阶段 GPGPU 方向的实验基于 QEMU 实现一个 RISC-V GPGPU 设备原型，包含 SIMT 执行引擎、DMA、MSI-X 中断和低精度浮点（FP8/FP4）支持。
 
-ch2 专业阶段新增了 **GPGPU 体系结构与建模**专题（2 篇），是本期训练营的重点实验项目。该实验基于 QEMU 实现了一个 RISC-V GPGPU 设备原型，目前已完成原型开发。
+## 实验概览
+
+| 项目 | 说明 |
+|------|-----|
+| 测试框架 | QTest（QOS 框架） |
+| 测试位置 | `tests/qtest/gpgpu-test.c` |
+| 测题数量 | 17 题 → 100 分 |
+| 运行命令 | `make -f Makefile.camp test-gpgpu` |
+
+## 文档
+
+- [GPU 实验手册](gpu-exper-manual.md) — 实验流程与测题说明
+- [GPU 硬件手册](gpu-datasheet.md) — 寄存器映射与 SIMT 架构
 
 简化架构图（参考 Vortex 设计）：
 

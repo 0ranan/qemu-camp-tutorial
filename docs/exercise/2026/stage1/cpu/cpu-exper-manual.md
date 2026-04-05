@@ -5,81 +5,59 @@
 
 ## 环境搭建
 
-第一步，以 Ubuntu 22.04 为例，介绍如何安装 QEMU 开发环境。
+第一步，安装 QEMU 开发依赖和 RISC-V 交叉编译工具链。
 
 ```bash
-# 备份 sources.list 文件
-sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak
-
-# 启用 deb-src 源（将所有 deb 源对应的 deb-src 源解锁）
-sudo sed -i '/^# deb-src /s/^# //' /etc/apt/sources.list
+# Ubuntu 24.04
+sudo sed -i 's/^Types: deb$/Types: deb deb-src/' /etc/apt/sources.list.d/ubuntu.sources
 sudo apt-get update
-sudo apt update && sudo apt build-dep qemu
+sudo apt-get build-dep -y qemu
 
-# 创建工具链安装目录
+# 安装 RISC-V 裸机交叉编译器
 sudo mkdir -p /opt/riscv
-
-# 下载工具链压缩包
-wget https://github.com/riscv-collab/riscv-gnu-toolchain/releases/download/2025.09.28/riscv64-elf-ubuntu-22.04-gcc-nightly-2025.09.28-nightly.tar.xz -O riscv-toolchain.tar.xz
-
-# 解压到安装目录
+wget -q https://github.com/riscv-collab/riscv-gnu-toolchain/releases/download/2025.09.28/riscv64-elf-ubuntu-24.04-gcc-nightly-2025.09.28-nightly.tar.xz -O riscv-toolchain.tar.xz
 sudo tar -xJf riscv-toolchain.tar.xz -C /opt/riscv --strip-components=1
-
-# 设置权限
 sudo chown -R $USER:$USER /opt/riscv
-echo "/opt/riscv/bin" >> $GITHUB_PATH
-export PATH=$PATH:/opt/riscv/bin/
-
+export PATH="/opt/riscv/bin:$PATH"
+echo 'export PATH="/opt/riscv/bin:$PATH"' >> ~/.bashrc
 riscv64-unknown-elf-gcc --version  # 验证编译器是否可用
+
+# 安装 Rust 工具链
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+. "$HOME/.cargo/env"
+cargo install bindgen-cli
 ```
 
 !!! note "提示"
 
     安装 QEMU 开发环境，请参考导学阶段的 [Step0: 搭建 QEMU 开发环境][1]。
 
-    安装 RISC-V 的交叉编译工具链：[下载地址][2]，尽量选择最新的版本，要求安装 `riscv64-unknown-elf-` 类型。
+    RISC-V 交叉编译工具链[下载地址][2]，要求安装 `riscv64-unknown-elf-` 类型，尽量选择最新版本。
 
+第二步，通过讲师提供的 GitHub Classroom 邀请链接加入实验，系统会自动将仓库 fork 到组织下并赋予你 maintainer 权限。
 
+!!! warning "注意"
 
-第二步，点击[这里][3]，自动 fork 作业仓库到 GTOC 组织下面，该仓库会为你开通代码上传权限。
+    请通过 Classroom 邀请链接获取仓库，**不支持手动 fork**。
 
-第三步，需要 clone 刚刚 fork 好的仓库到本地：
+第三步，clone 仓库到本地：
 
 ```bash
-git clone git@github.com:gevico/qemu-camp-2026-cpu-<你的 github 用户名>.git
-
-# 比如 github 用户名是 zevorn，那么命令如下：
-# git clone git@github.com:gevico/qemu-camp-2026-cpu-zevorn.git
+git clone git@github.com:gevico/qemu-camp-2026-exper-<你的 github 用户名>.git
 ```
 
-第四步，添加上游远程仓库，用于同步上游的代码变更：
+第四步，添加上游远程仓库，用于同步上游代码变更：
 
 ```bash
-git remote add upstream git@github.com:gevico/gevico-classroom-qemu-camp-2026-cpu-qemu-camp.git
-```
-
-同步上游代码变更的常用命令：
-
-```bash
+git remote add upstream git@github.com:gevico/qemu-camp-2026-exper.git
 git pull upstream main --rebase
 ```
 
-最后一步，配置编译选项：
+第五步，配置并编译：
 
 ```bash
-cd qemu
-./configure --target-list=riscv64-softmmu \
-            --extra-cflags="-O0 -g3" \
-            --cross-prefix-riscv64=riscv64-unknown-elf-
-```
-
-执行时，如果看到以下输出，证明交叉编译工具链配置成功：
-
-```bash
-  ...
-  Cross compilers
-    riscv64                         : riscv64-unknown-elf-gcc
-  ...
+make -f Makefile.camp configure
+make -f Makefile.camp build
 ```
 
 ## 提交代码

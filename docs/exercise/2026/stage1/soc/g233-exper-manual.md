@@ -8,44 +8,50 @@
 
 ## 环境搭建
 
-第一步，安装 QEMU 开发环境，请参考导学阶段的 [Step0: 搭建 QEMU 开发环境][1]。
+第一步，安装 QEMU 开发依赖。
+
+```bash
+# Ubuntu 24.04
+sudo sed -i 's/^Types: deb$/Types: deb deb-src/' /etc/apt/sources.list.d/ubuntu.sources
+sudo apt-get update
+sudo apt-get build-dep -y qemu
+
+# 安装 Rust 工具链（版本要求 >= 1.85）
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+. "$HOME/.cargo/env"
+cargo install bindgen-cli
+```
 
 !!! note "提示"
 
     SoC 方向使用 QTest 测试框架，测题在宿主机侧编译运行，**不需要** RISC-V 交叉编译工具链。
 
-    安装 Rust，版本要求 >= 1.85，安装方法请参考 [Rust 官方文档][6]。
+    安装 QEMU 开发环境，请参考导学阶段的 [Step0: 搭建 QEMU 开发环境][1]。
 
-第二步，点击[这里][3]，自动 fork 作业仓库到 GTOC 组织下面，该仓库会为你开通代码上传权限。
+第二步，通过讲师提供的 GitHub Classroom 邀请链接加入实验，系统会自动将仓库 fork 到组织下并赋予你 maintainer 权限。
 
-第三步，需要 clone 刚刚 fork 好的仓库到本地：
+!!! warning "注意"
+
+    请通过 Classroom 邀请链接获取仓库，**不支持手动 fork**。
+
+第三步，clone 仓库到本地：
 
 ```bash
-git clone git@github.com:gevico/qemu-camp-2026-soc-<你的 github 用户名>.git
-
-# 比如 github 用户名是 zevorn，那么命令如下：
-# git clone git@github.com:gevico/qemu-camp-2026-soc-zevorn.git
+git clone git@github.com:gevico/qemu-camp-2026-exper-<你的 github 用户名>.git
 ```
 
-第四步，添加上游远程仓库，用于同步上游的代码变更：
+第四步，添加上游远程仓库，用于同步上游代码变更：
 
 ```bash
-git remote add upstream git@github.com:gevico/gevico-classroom-qemu-camp-2026-soc-qemu-camp.git
-```
-
-同步上游代码变更的常用命令：
-
-```bash
+git remote add upstream git@github.com:gevico/qemu-camp-2026-exper.git
 git pull upstream main --rebase
 ```
 
-第五步，配置编译选项：
+第五步，配置并编译：
 
 ```bash
-cd qemu
-./configure --target-list=riscv64-softmmu \
-            --extra-cflags="-O0 -g3" \
-            --enable-rust
+make -f Makefile.camp configure
+make -f Makefile.camp build
 ```
 
 ## 提交代码
